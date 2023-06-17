@@ -20,11 +20,45 @@ async function loadFonts() {
 }
 loadFonts();
 
+var APPSSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyC6_eVjX82vHYVW_HJeWsJzIarwNvLK6KQBSUIKSggrGXPAIufn6hveKJgCxmWBgSA/exec";
+
+function php_email_form_submit(thisForm, action, formData) {
+  
+  fetch(action, {
+    method: 'POST',
+    //body: JSON.stringify(Object.fromEntries(formData )),
+    body: formData,
+    //headers: {'Content-type': 'application/x-www-form-urlencoded'}
+  }).then(response => response.json())
+  .then(response => {
+    if( response.ok ) {
+      return response
+    } else {
+      throw new Error(`${response.status} ${response.statusText} ${response.url}`); 
+    }
+  })
+  .then(data => {
+    thisForm.querySelector('.loading').classList.remove('d-block');
+    if (data.ok) {
+      thisForm.querySelector('.sent-message').classList.add('d-block');
+      thisForm.reset(); 
+    } else {
+      throw new Error(data ? data : 'Form submission failed and no error message returned from: ' + action); 
+    }
+  })
+  .catch((error) => {
+    
+  });
+}
+
 jQuery(document).ready(function(){
   jQuery('#selfie_form').submit(function(e){
     e.preventDefault();
     var imgInput = $(this).find('input[name="profile_img"]');
-    var textInput = $(this).find('input[type="text"]')
+    var textInput = $(this).find('input[name="name"]');
+    var phoneInput = $(this).find('input[name="name"]')
+
+    php_email_form_submit( this, APPSSCRIPT_URL, new FormData(this) );
     var imgEl = document.createElement('img');
     // if (imgInput.files && imgInput.files[0]) {
     //   const reader = new FileReader();
