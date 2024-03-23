@@ -58,7 +58,7 @@ jQuery(document).ready(function(){
     var textInput = $(this).find('input[name="name"]');
     var phoneInput = $(this).find('input[name="name"]')
 
-    php_email_form_submit( this, APPSSCRIPT_URL, new FormData(this) );
+    // php_email_form_submit( this, APPSSCRIPT_URL, new FormData(this) );
     var imgEl = document.createElement('img');
     // if (imgInput.files && imgInput.files[0]) {
     //   const reader = new FileReader();
@@ -94,7 +94,7 @@ function mergeSelfie(imgURL, textInput){
 
   mergeImages([
     { src: 'bg.png', x: 0, y: 0 },
-    { src: imgURL, x:1600, y: 1430 },
+    { src: imgURL, x:1300, y: 1050 },
   ], {nameText: textInput}).then(b64 => imageSrc = b64).then( b64 => {
     aTag.href = imageSrc;
     return b64;
